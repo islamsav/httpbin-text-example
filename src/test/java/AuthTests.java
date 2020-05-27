@@ -1,4 +1,3 @@
-import com.google.gson.Gson;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
@@ -9,13 +8,14 @@ import pojo.EndPoints;
 
 //TODO динамик дата сделать через okHttp3
 //TODO добавить негативные сценарии
+//TODO добавить спецификацию
 public class AuthTests {
 
     @Test(testName = "POSITIVE auth test on basic-auth/ with random data", description = "execute GET request on http://httpbin.org/basic-auth/{user}/{password}", suiteName = "auth")
     public void performBasicAuthRequest() {
         String userName = Utils.getRandomString(Utils.EN, 10) + Utils.rnd(3, 5);
         String password = Utils.rnd(3, 5) + Utils.getRandomString(Utils.EN, 10);
-        String responseBody = RestAssured
+        AuthModel authModel = RestAssured
                 .given()
                 .pathParam("user", userName)
                 .pathParam("passwd", password)
@@ -26,10 +26,8 @@ public class AuthTests {
                 .then().log().status().log().body()
                 .statusCode(HttpStatus.SC_OK)
                 .extract().response().body()
-                .asString();
-        Assert.assertFalse(responseBody.isEmpty(), ErrorMessages.RESPONSE_BODY_IS_EMPTY);
-        AuthModel authModel = new Gson().fromJson(responseBody, AuthModel.class);
-        Assert.assertNotNull(responseBody, String.format(ErrorMessages.UNSUCCESSFUL_MAPPING, "AuthModel"));
+                .as(AuthModel.class);
+        Assert.assertNotNull(authModel, String.format(ErrorMessages.UNSUCCESSFUL_MAPPING, "AuthModel"));
         Assert.assertTrue(authModel.getAuthenticated());
         Assert.assertEquals(userName, authModel.getUser());
     }
