@@ -104,4 +104,40 @@ public class AuthTests {
                 .extract().statusCode();
         Assert.assertEquals(401, code, ErrorMessages.STATUS_CODE_NOT_MATCH);
     }
+
+    @Test(testName = "POSITIVE /digest-auth/{qop}/{user}/{passwd}/{algorithm}", suiteName = "digest-auth")
+    public void positiveDigestAuthWithAlgorithmRequest() {
+        String userName = Utils.getRandomString(Utils.EN, 10);
+        String password = Utils.getRandomString(Utils.RAND, 10);
+        AuthModel authModel = RestAssured.given()
+                .pathParam("user", userName)
+                .pathParam("passwd", password)
+                .pathParam("qop", "auth")
+                .pathParam("algorithm", "MD5")
+                .contentType(ContentType.JSON)
+                .auth().digest(userName, password)
+                .when().get(EndPoints.DIGEST_AUTH_WITH_ALGORITHM)
+                .then().log().status().log().body()
+                .statusCode(HttpStatus.SC_OK)
+                .extract().as(AuthModel.class);
+        Assert.assertTrue(authModel.getAuthenticated());
+        Assert.assertEquals(userName, authModel.getUser());
+    }
+
+    @Test(testName = "NEGATIVE /digest-auth/{qop}/{user}/{passwd}/{algorithm}", suiteName = "digest-auth")
+    public void negativeDigestAuthWithAlgorithmRequest() {
+        String userName = Utils.getRandomString(Utils.EN, 10);
+        String password = Utils.getRandomString(Utils.RAND, 10);
+        int code = RestAssured.given()
+                .pathParam("user", userName)
+                .pathParam("passwd", password)
+                .pathParam("qop", "auth")
+                .pathParam("algorithm", "MD5")
+                .contentType(ContentType.JSON)
+                .auth().digest(userName, userName)
+                .when().get(EndPoints.DIGEST_AUTH_WITH_ALGORITHM)
+                .then().log().status().log().body()
+                .extract().statusCode();
+        Assert.assertEquals(401, code, ErrorMessages.STATUS_CODE_NOT_MATCH);
+    }
 }
