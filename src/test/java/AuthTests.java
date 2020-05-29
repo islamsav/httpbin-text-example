@@ -4,7 +4,6 @@ import org.apache.http.HttpStatus;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pojo.AuthModel;
-import pojo.EndPoints;
 
 public class AuthTests {
 
