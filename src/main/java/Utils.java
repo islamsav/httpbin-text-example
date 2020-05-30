@@ -68,4 +68,17 @@ public class Utils {
     public static int rnd(int min, int max) {
         return ThreadLocalRandom.current().nextInt(min, max + 1);
     }
+
+    /**
+     * @param lvl уровень стектрейса
+     * @return возвращает имя метода
+     */
+    public static String getRunningMethodName(int lvl) {
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        if (stackTrace.length >= lvl) {
+            return stackTrace[lvl].getMethodName();
+        } else {
+            return "none method";
+        }
+    }
 }

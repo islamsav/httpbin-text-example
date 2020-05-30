@@ -2,6 +2,8 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pojo.AuthModel;
@@ -11,6 +13,7 @@ import java.util.Base64;
 import static org.hamcrest.Matchers.equalTo;
 
 public class AuthTests {
+    private final static Logger LOGGER = LoggerFactory.getLogger(AuthTests.class);
 
     @Test(testName = "POSITIVE auth test on /basic-auth/{user}/{password} with random data", suiteName = "auth")
     public void positivePerformBasicAuthRequest() {
@@ -186,8 +189,11 @@ public class AuthTests {
     @Test(testName = "POSITIVE hidden-basic-auth/{user}/{passwd}", suiteName = "auth")
     public void positiveHiddenBasicAuth() {
         String userName = Utils.getRandomString(Utils.EN, 7);
+        LOGGER.info("user: {}", userName);
         String password = Utils.getRandomString(Utils.RAND, 15);
+        LOGGER.info("password: {}", password);
         String auth = Base64.getEncoder().encodeToString((userName + ":" + password).getBytes());
+        LOGGER.info("auth basic code: {}", auth);
         RestAssured.given()
                 .pathParam("user", userName)
                 .pathParam("passwd", password)
@@ -197,5 +203,6 @@ public class AuthTests {
                 .then().log().status().log().body()
                 .assertThat().statusCode(HttpStatus.SC_OK)
                 .and().body("authenticated", equalTo(true), "user", equalTo(userName));
+        LOGGER.info("Test: {} is passed", Utils.getRunningMethodName(2));
     }
 }
