@@ -6,11 +6,13 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import pojo.AuthModel;
 
+import java.util.Base64;
+
 import static org.hamcrest.Matchers.equalTo;
 
 public class AuthTests {
 
-    @Test(testName = "POSITIVE auth test on /basic-auth/{user}/{password} with random data", suiteName = "basic-auth")
+    @Test(testName = "POSITIVE auth test on /basic-auth/{user}/{password} with random data", suiteName = "auth")
     public void positivePerformBasicAuthRequest() {
         String userName = Utils.getRandomString(Utils.EN, 10);
         String password = Utils.getRandomString(Utils.RAND, 10);
@@ -30,7 +32,7 @@ public class AuthTests {
         Assert.assertEquals(userName, authModel.getUser());
     }
 
-    @Test(testName = "NEGATIVE auth test on /basic-auth/{user}/{password} with random data", suiteName = "basic-auth")
+    @Test(testName = "NEGATIVE auth test on /basic-auth/{user}/{password} with random data", suiteName = "auth")
     public void negativePerformBasicAuthRequest() {
         String userName = Utils.getRandomString(Utils.EN, 10);
         String password = Utils.getRandomString(Utils.RAND, 10);
@@ -46,7 +48,7 @@ public class AuthTests {
         Assert.assertEquals(401, code, ErrorMessages.STATUS_CODE_NOT_MATCH);
     }
 
-    @Test(testName = "POSITIVE auth test on bearer/ with random data", suiteName = "bearer")
+    @Test(testName = "POSITIVE auth test on bearer/ with random data", suiteName = "auth")
     public void performBearerAuthRequest() {
         String generateBearer = Utils.getRandomString(Utils.EN, 10) + Utils.getRandomString(Utils.DIGIT, 30);
         AuthModel authModel = RestAssured.given()
@@ -62,7 +64,7 @@ public class AuthTests {
         Assert.assertEquals(generateBearer, authModel.getToken());
     }
 
-    @Test(testName = "NEGATIVE auth test on bearer/ without header", suiteName = "bearer")
+    @Test(testName = "NEGATIVE auth test on bearer/ without header", suiteName = "auth")
     public void negativeBearerAuthRequest() {
         // Тут не передаем обязательный хидер для данного запроса и получаем статус код 401
         int code = RestAssured.given()
@@ -73,7 +75,7 @@ public class AuthTests {
         Assert.assertEquals(401, code, ErrorMessages.STATUS_CODE_NOT_MATCH);
     }
 
-    @Test(testName = "POSITIVE /digest-auth/{qop}/{user}/{passwd}", suiteName = "digest-auth")
+    @Test(testName = "POSITIVE /digest-auth/{qop}/{user}/{passwd}", suiteName = "auth")
     public void positiveDigestAuthRequest() {
         String userName = Utils.getRandomString(Utils.EN, 10);
         String password = Utils.getRandomString(Utils.RAND, 10);
@@ -92,7 +94,7 @@ public class AuthTests {
         Assert.assertEquals(userName, authModel.getUser());
     }
 
-    @Test(testName = "NEGATIVE /digest-auth/{qop}/{user}/{passwd}", suiteName = "digest-auth")
+    @Test(testName = "NEGATIVE /digest-auth/{qop}/{user}/{passwd}", suiteName = "auth")
     public void negativeDigestAuthRequest() {
         String userName = Utils.getRandomString(Utils.EN, 10);
         String password = Utils.getRandomString(Utils.RAND, 10);
@@ -108,7 +110,7 @@ public class AuthTests {
         Assert.assertEquals(401, code, ErrorMessages.STATUS_CODE_NOT_MATCH);
     }
 
-    @Test(testName = "POSITIVE /digest-auth/{qop}/{user}/{passwd}/{algorithm}", suiteName = "digest-auth")
+    @Test(testName = "POSITIVE /digest-auth/{qop}/{user}/{passwd}/{algorithm}", suiteName = "auth")
     public void positiveDigestAuthWithAlgorithmRequest() {
         String userName = Utils.getRandomString(Utils.EN, 10);
         String password = Utils.getRandomString(Utils.RAND, 10);
@@ -128,7 +130,7 @@ public class AuthTests {
         Assert.assertEquals(userName, authModel.getUser());
     }
 
-    @Test(testName = "NEGATIVE /digest-auth/{qop}/{user}/{passwd}/{algorithm}", suiteName = "digest-auth")
+    @Test(testName = "NEGATIVE /digest-auth/{qop}/{user}/{passwd}/{algorithm}", suiteName = "auth")
     public void negativeDigestAuthWithAlgorithmRequest() {
         String userName = Utils.getRandomString(Utils.EN, 10);
         String password = Utils.getRandomString(Utils.RAND, 10);
@@ -136,7 +138,6 @@ public class AuthTests {
                 .pathParam("qop", "auth")
                 .pathParam("user", userName)
                 .pathParam("passwd", password)
-                .pathParam("algorithm", "MD5")
                 .pathParam("algorithm", "MD5")
                 .contentType(ContentType.JSON)
                 .auth().digest(userName, userName)
@@ -146,7 +147,7 @@ public class AuthTests {
         Assert.assertEquals(401, code, ErrorMessages.STATUS_CODE_NOT_MATCH);
     }
 
-    @Test(testName = "POSITIVE digest-auth/{qop}/{user}/{passwd}/{algorithm}/{stale_after}", suiteName = "digest-auth")
+    @Test(testName = "POSITIVE digest-auth/{qop}/{user}/{passwd}/{algorithm}/{stale_after}", suiteName = "auth")
     public void positiveDigestAuthWithStaleAfter() {
         String userName = Utils.getRandomString(Utils.EN, 10);
         String password = Utils.getRandomString(Utils.RAND, 10);
@@ -164,7 +165,7 @@ public class AuthTests {
         response.then().body("authenticated", equalTo(true), "user", equalTo(userName));
     }
 
-    @Test(testName = "NEGATIVE digest-auth/{qop}/{user}/{passwd}/{algorithm}/{stale_after}", suiteName = "digest-auth")
+    @Test(testName = "NEGATIVE digest-auth/{qop}/{user}/{passwd}/{algorithm}/{stale_after}", suiteName = "auth")
     public void negativeDigestAuthWithStaleAfter() {
         String userName = Utils.getRandomString(Utils.EN, 10);
         String password = Utils.getRandomString(Utils.RAND, 10);
@@ -182,18 +183,19 @@ public class AuthTests {
                 .statusCode(HttpStatus.SC_UNAUTHORIZED);
     }
 
-    @Test
-    public void test1() {
-        String userName = Utils.getRandomString(Utils.EN, 10);
-        String password = Utils.getRandomString(Utils.RAND, 10);
+    @Test(testName = "POSITIVE hidden-basic-auth/{user}/{passwd}", suiteName = "auth")
+    public void positiveHiddenBasicAuth() {
+        String userName = Utils.getRandomString(Utils.EN, 7);
+        String password = Utils.getRandomString(Utils.RAND, 15);
+        String auth = Base64.getEncoder().encodeToString((userName + ":" + password).getBytes());
         RestAssured.given()
-                .auth().basic(userName, password)
                 .pathParam("user", userName)
                 .pathParam("passwd", password)
+                .header("Authorization", "Basic " + auth)
                 .contentType(ContentType.JSON)
                 .when().get(EndPoints.HIDDEN_BASIC_AUTH)
-                .then()
-                .statusCode(HttpStatus.SC_OK);
-
+                .then().log().status().log().body()
+                .assertThat().statusCode(HttpStatus.SC_OK)
+                .and().body("authenticated", equalTo(true), "user", equalTo(userName));
     }
 }
