@@ -3,15 +3,16 @@ import org.apache.commons.lang3.RandomStringUtils;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class DataGen {
-    public static final String RU = "RUSSIAN";
-    public static final String EN = "ENGLISH";
-    public static final String DIGIT = "DIGIT";
-    public static final String RAND = "RAND";
+    private static final String EN = "ENGLISH";
+    private static final String DIGIT = "DIGIT";
+    public static final String RAND_CHARS = "RAND";
+    public static final String GEN_USER_NAME = getRandomString(EN, rnd(6, 11));
+    public static final String GEN_PASSWORD = getRandomString(RAND_CHARS, rnd(10, 30));
 
     /**
-     * @param type   язык
+     * @param type   тип
      * @param length длина
-     * @return Возвращает сгенерированную строку указанной длины и языка
+     * @return Возвращает сгенерированную строку указанной длины и типа
      * @throws IllegalArgumentException выбросится в случае если передадим в аргументы неподдерживаемый язык
      */
     public static String getRandomString(String type, int length) {
@@ -21,18 +22,15 @@ public class DataGen {
                 case EN:
                     sb.append(RandomStringUtils.randomAlphabetic(1).toLowerCase());
                     break;
-                case RU:
-                    sb.append(getRussianLetter());
-                    break;
                 case DIGIT:
                     sb.append(rnd(0, 9));
                     break;
-                case RAND:
+                case RAND_CHARS:
                     String[] arrRndChars =
                             {
                                     RandomStringUtils.randomAlphabetic(1).toLowerCase(),
-                                    RandomStringUtils.randomAlphabetic(1).toUpperCase(),
-                                    String.valueOf(rnd(0, 9))
+                                    String.valueOf(rnd(0, 9)),
+                                    RandomStringUtils.randomAlphabetic(1).toUpperCase()
                             };
                     sb.append(arrRndChars[rnd(0, arrRndChars.length - 1)]);
                     break;
@@ -41,23 +39,6 @@ public class DataGen {
             }
         }
         return new String(sb);
-    }
-
-    public static void main(String[] args) {
-        System.out.println(getRandomString(RAND, 10));
-    }
-
-    /**
-     * @return Случайная русская буква
-     */
-    private static String getRussianLetter() {
-        int leftLimit = 1040;
-        int rightLimit = leftLimit + 33;
-        String res = "";
-        int a = rnd(leftLimit, rightLimit);
-        char symbol = (char) a;
-        res += symbol;
-        return res;
     }
 
     /**

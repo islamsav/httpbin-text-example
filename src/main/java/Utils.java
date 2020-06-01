@@ -12,11 +12,4 @@ public class Utils {
             return "none method";
         }
     }
-
-    /**
-     * @return возвращает имя метода вызванного уровнем выше
-     */
-    public static String getRunningMethodName() {
-        return Thread.currentThread().getStackTrace()[2].getMethodName();
-    }
 }

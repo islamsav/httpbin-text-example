@@ -17,9 +17,9 @@ public class AuthTests {
 
     @Test(testName = "POSITIVE auth test on /basic-auth/{user}/{password} with random data", suiteName = "auth")
     public void positivePerformBasicAuthRequest() {
-        String generateUserName = DataGen.getRandomString(DataGen.EN, DataGen.rnd(15, 25));
+        String generateUserName = DataGen.GEN_USER_NAME;
         LOGGER.info("user: {}", generateUserName);
-        String generatePassword = DataGen.getRandomString(DataGen.RAND, DataGen.rnd(15, 25));
+        String generatePassword = DataGen.GEN_PASSWORD;
         LOGGER.info("password: {}", generatePassword);
         AuthModel authModel = RestAssured.given().baseUri(EndPoints.BASE)
                 .pathParam("user", generateUserName)
@@ -36,14 +36,14 @@ public class AuthTests {
         Assert.assertNotNull(authModel, String.format(ErrorMessages.UNSUCCESSFUL_MAPPING, "AuthModel"));
         Assert.assertTrue(authModel.getAuthenticated());
         Assert.assertEquals(generateUserName, authModel.getUser());
-        LOGGER.info("Test [{}] PASSED", Utils.getRunningMethodName());
+        LOGGER.info("Test [{}] PASSED", Utils.getRunningMethodName(2));
     }
 
     @Test(testName = "NEGATIVE auth test on /basic-auth/{user}/{password} with random data", suiteName = "auth")
     public void negativePerformBasicAuthRequest() {
-        String userName = DataGen.getRandomString(DataGen.EN, DataGen.rnd(15, 25));
+        String userName = DataGen.GEN_USER_NAME;
         LOGGER.info("user: {}", userName);
-        String password = DataGen.getRandomString(DataGen.RAND, DataGen.rnd(15, 25));
+        String password = DataGen.GEN_PASSWORD;
         LOGGER.info("password: {}", password);
         RestAssured.given().baseUri(EndPoints.BASE)
                 .pathParam("user", userName)
@@ -55,12 +55,12 @@ public class AuthTests {
                 .get(EndPoints.BASIC_AUTH)
                 .then().log().status()
                 .assertThat().statusCode(HttpStatus.SC_UNAUTHORIZED);
-        LOGGER.info("Test [{}] PASSED", Utils.getRunningMethodName());
+        LOGGER.info("Test [{}] PASSED", Utils.getRunningMethodName(2));
     }
 
     @Test(testName = "POSITIVE auth test on bearer/ with random data", suiteName = "auth")
     public void performBearerAuthRequest() {
-        String generateBearer = DataGen.getRandomString(DataGen.RAND, DataGen.rnd(30, 100));
+        String generateBearer = DataGen.getRandomString(DataGen.RAND_CHARS, DataGen.rnd(30, 100));
         LOGGER.info("Bearer {}", generateBearer);
         AuthModel authModel = RestAssured.given().baseUri(EndPoints.BASE)
                 .header("Authorization", "Bearer " + generateBearer)
@@ -74,7 +74,7 @@ public class AuthTests {
         Assert.assertNotNull(authModel, String.format(ErrorMessages.UNSUCCESSFUL_MAPPING, "AuthModel"));
         Assert.assertTrue(authModel.getAuthenticated());
         Assert.assertEquals(generateBearer, authModel.getToken());
-        LOGGER.info("Test [{}] PASSED", Utils.getRunningMethodName());
+        LOGGER.info("Test [{}] PASSED", Utils.getRunningMethodName(2));
     }
 
     @Test(testName = "NEGATIVE auth test on bearer/ without header", suiteName = "auth")
@@ -88,14 +88,14 @@ public class AuthTests {
                 .extract().statusCode();
         Assert.assertEquals(HttpStatus.SC_UNAUTHORIZED, code, ErrorMessages.STATUS_CODE_NOT_MATCH);
         LOGGER.info("Request status code = {}", code);
-        LOGGER.info("Test [{}] PASSED", Utils.getRunningMethodName());
+        LOGGER.info("Test [{}] PASSED", Utils.getRunningMethodName(2));
     }
 
     @Test(testName = "POSITIVE /digest-auth/{qop}/{user}/{passwd}", suiteName = "auth")
     public void positiveDigestAuthRequest() {
-        String userName = DataGen.getRandomString(DataGen.EN, DataGen.rnd(15, 25));
+        String userName = DataGen.GEN_USER_NAME;
         LOGGER.info("user: {}", userName);
-        String password = DataGen.getRandomString(DataGen.RAND, DataGen.rnd(15, 25));
+        String password = DataGen.GEN_PASSWORD;
         LOGGER.info("password: {}", password);
         AuthModel authModel = RestAssured.given().baseUri(EndPoints.BASE)
                 .pathParam("user", userName)
@@ -111,14 +111,14 @@ public class AuthTests {
         Assert.assertNotNull(authModel, String.format(ErrorMessages.UNSUCCESSFUL_MAPPING, "AuthModel"));
         Assert.assertTrue(authModel.getAuthenticated());
         Assert.assertEquals(userName, authModel.getUser());
-        LOGGER.info("Test [{}] PASSED", Utils.getRunningMethodName());
+        LOGGER.info("Test [{}] PASSED", Utils.getRunningMethodName(2));
     }
 
     @Test(testName = "NEGATIVE /digest-auth/{qop}/{user}/{passwd}", suiteName = "auth")
     public void negativeDigestAuthRequest() {
-        String userName = DataGen.getRandomString(DataGen.EN, DataGen.rnd(15, 25));
+        String userName = DataGen.GEN_USER_NAME;
         LOGGER.info("user: {}", userName);
-        String password = DataGen.getRandomString(DataGen.RAND, DataGen.rnd(15, 25));
+        String password = DataGen.GEN_PASSWORD;
         LOGGER.info("password: {}", password);
         int code = RestAssured.given().baseUri(EndPoints.BASE)
                 .pathParam("user", userName)
@@ -132,14 +132,14 @@ public class AuthTests {
                 .extract().statusCode();
         Assert.assertEquals(HttpStatus.SC_UNAUTHORIZED, code, ErrorMessages.STATUS_CODE_NOT_MATCH);
         LOGGER.info("Request status code = {}", code);
-        LOGGER.info("Test [{}] PASSED", Utils.getRunningMethodName());
+        LOGGER.info("Test [{}] PASSED", Utils.getRunningMethodName(2));
     }
 
     @Test(testName = "POSITIVE /digest-auth/{qop}/{user}/{passwd}/{algorithm}", suiteName = "auth")
     public void positiveDigestAuthWithAlgorithmRequest() {
-        String userName = DataGen.getRandomString(DataGen.EN, DataGen.rnd(10, 20));
+        String userName = DataGen.GEN_USER_NAME;
         LOGGER.info("user: {}", userName);
-        String password = DataGen.getRandomString(DataGen.RAND, DataGen.rnd(10, 20));
+        String password = DataGen.GEN_PASSWORD;
         LOGGER.info("password: {}", password);
         AuthModel authModel = RestAssured.given().baseUri(EndPoints.BASE)
                 .pathParam("user", userName)
@@ -156,14 +156,14 @@ public class AuthTests {
         Assert.assertNotNull(authModel, String.format(ErrorMessages.UNSUCCESSFUL_MAPPING, "AuthModel"));
         Assert.assertTrue(authModel.getAuthenticated());
         Assert.assertEquals(userName, authModel.getUser());
-        LOGGER.info("Test [{}] PASSED", Utils.getRunningMethodName());
+        LOGGER.info("Test [{}] PASSED", Utils.getRunningMethodName(2));
     }
 
     @Test(testName = "NEGATIVE /digest-auth/{qop}/{user}/{passwd}/{algorithm}", suiteName = "auth")
     public void negativeDigestAuthWithAlgorithmRequest() {
-        String userName = DataGen.getRandomString(DataGen.EN, DataGen.rnd(10, 20));
+        String userName = DataGen.GEN_USER_NAME;
         LOGGER.info("user: {}", userName);
-        String password = DataGen.getRandomString(DataGen.RAND, DataGen.rnd(10, 20));
+        String password = DataGen.GEN_PASSWORD;
         LOGGER.info("password: {}", password);
         int code = RestAssured.given().baseUri(EndPoints.BASE)
                 .pathParam("qop", "auth")
@@ -178,14 +178,14 @@ public class AuthTests {
                 .extract().statusCode();
         Assert.assertEquals(HttpStatus.SC_UNAUTHORIZED, code, ErrorMessages.STATUS_CODE_NOT_MATCH);
         LOGGER.info("Request status code = {}", code);
-        LOGGER.info("Test [{}] PASSED", Utils.getRunningMethodName());
+        LOGGER.info("Test [{}] PASSED", Utils.getRunningMethodName(2));
     }
 
     @Test(testName = "POSITIVE digest-auth/{qop}/{user}/{passwd}/{algorithm}/{stale_after}", suiteName = "auth")
     public void positiveDigestAuthWithStaleAfter() {
-        String userName = DataGen.getRandomString(DataGen.EN, DataGen.rnd(10, 20));
+        String userName = DataGen.GEN_USER_NAME;
         LOGGER.info("user: {}", userName);
-        String password = DataGen.getRandomString(DataGen.RAND, DataGen.rnd(10, 20));
+        String password = DataGen.GEN_PASSWORD;
         LOGGER.info("password: {}", password);
         Response response = RestAssured.given().baseUri(EndPoints.BASE)
                 .pathParam("qop", "auth")
@@ -201,14 +201,14 @@ public class AuthTests {
         Assert.assertEquals(HttpStatus.SC_OK, code, ErrorMessages.STATUS_CODE_NOT_MATCH);
         response.then().body("authenticated", equalTo(true), "user", equalTo(userName));
         LOGGER.info("Request status code = {}", code);
-        LOGGER.info("Test [{}] PASSED", Utils.getRunningMethodName());
+        LOGGER.info("Test [{}] PASSED", Utils.getRunningMethodName(2));
     }
 
     @Test(testName = "NEGATIVE digest-auth/{qop}/{user}/{passwd}/{algorithm}/{stale_after}", suiteName = "auth")
     public void negativeDigestAuthWithStaleAfter() {
-        String userName = DataGen.getRandomString(DataGen.EN, DataGen.rnd(10, 20));
+        String userName = DataGen.GEN_USER_NAME;
         LOGGER.info("user: {}", userName);
-        String password = DataGen.getRandomString(DataGen.RAND, DataGen.rnd(10, 20));
+        String password = DataGen.GEN_PASSWORD;
         LOGGER.info("password: {}", password);
         RestAssured.given().baseUri(EndPoints.BASE)
                 .pathParam("qop", "auth")
@@ -223,14 +223,14 @@ public class AuthTests {
                 .then().log().status().log().body()
                 .assertThat()
                 .statusCode(HttpStatus.SC_UNAUTHORIZED);
-        LOGGER.info("Test [{}] PASSED", Utils.getRunningMethodName());
+        LOGGER.info("Test [{}] PASSED", Utils.getRunningMethodName(2));
     }
 
     @Test(testName = "POSITIVE hidden-basic-auth/{user}/{passwd}", suiteName = "auth")
     public void positiveHiddenBasicAuth() {
-        String userName = DataGen.getRandomString(DataGen.EN, 7);
+        String userName = DataGen.GEN_USER_NAME;
         LOGGER.info("user: {}", userName);
-        String password = DataGen.getRandomString(DataGen.RAND, 15);
+        String password = DataGen.GEN_PASSWORD;
         LOGGER.info("password: {}", password);
         String auth = Base64.getEncoder().encodeToString((userName + ":" + password).getBytes());
         LOGGER.info("auth basic code: {}", auth);
