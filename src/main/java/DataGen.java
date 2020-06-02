@@ -1,8 +1,12 @@
 import org.apache.commons.lang3.RandomStringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ThreadLocalRandom;
 
 public class DataGen {
+    private final static Logger LOGGER = LoggerFactory.getLogger(DataGen.class);
+
     public static final String EN = "ENGLISH";
     public static final String DIGIT = "DIGIT";
     public static final String RAND_CHARS = "RAND";
@@ -36,7 +40,9 @@ public class DataGen {
                     throw new IllegalArgumentException(String.format(ErrorMessages.INCORRECT_PARAMETER, type));
             }
         }
-        return new String(sb);
+        final String value = new String(sb);
+        LOGGER.info("generate value - {}", value);
+        return value;
     }
 
     /**
