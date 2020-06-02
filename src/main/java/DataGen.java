@@ -3,11 +3,9 @@ import org.apache.commons.lang3.RandomStringUtils;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class DataGen {
-    private static final String EN = "ENGLISH";
-    private static final String DIGIT = "DIGIT";
+    public static final String EN = "ENGLISH";
+    public static final String DIGIT = "DIGIT";
     public static final String RAND_CHARS = "RAND";
-    public static final String GEN_USER_NAME = getRandomString(EN, rnd(6, 11));
-    public static final String GEN_PASSWORD = getRandomString(RAND_CHARS, rnd(10, 30));
 
     /**
      * @param type   тип
