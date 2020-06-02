@@ -13,6 +13,7 @@ import java.util.Base64;
 import static org.hamcrest.Matchers.equalTo;
 
 public class AuthTests {
+
     private final static Logger LOGGER = LoggerFactory.getLogger(AuthTests.class);
 
     @Test(testName = "POSITIVE auth test on /basic-auth/{user}/{password} with random data", suiteName = "auth")
