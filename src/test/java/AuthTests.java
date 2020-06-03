@@ -14,7 +14,6 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class AuthTests {
 
-
     @Test(testName = "POSITIVE auth test on /basic-auth/{user}/{password} with random data", suiteName = "auth")
     public void positivePerformBasicAuthRequest() {
         String generateUserName = DataGen.getRandomString(DataGen.EN, DataGen.rnd(6, 15));
