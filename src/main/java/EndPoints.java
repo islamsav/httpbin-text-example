@@ -26,5 +26,5 @@ public class EndPoints {
     public static final String RANGE = "range/{numbytes}";
     public static final String STREAM_BYTES = "stream-bytes/{n}";
     public static final String STREAM = "stream/{n}";
-    public static final String UDID = "/uuid";
+    public static final String UUID = "/uuid";
 }

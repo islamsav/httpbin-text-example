@@ -1,9 +1,14 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
 
-<suite name="auth" parallel="methods">
+<suite name="all" parallel="methods">
     <test name="Auth" >
         <classes>
             <class name="AuthTests" />
+        </classes>
+    </test>
+    <test name="DynamicData" >
+        <classes>
+            <class name="DynamicData" />
         </classes>
     </test>
 </suite>
