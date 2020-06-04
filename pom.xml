@@ -6,10 +6,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-<!--        <threadCount>${threadCount}</threadCount>  Тут можно указать количество потоков при запуске с консоли-->
         <threadCount>1</threadCount>
-        <parallel>methods</parallel>
-        <reuseForks>false</reuseForks>
+<!--        <threadCount>${threadCount}</threadCount>-->
     </properties>
 
     <groupId>org.httpbin</groupId>
