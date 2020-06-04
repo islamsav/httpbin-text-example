@@ -6,8 +6,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <threadCount>1</threadCount>
-<!--        <threadCount>${threadCount}</threadCount>-->
+        <threadCount>${threadCount}</threadCount>
     </properties>
 
     <groupId>org.httpbin</groupId>
