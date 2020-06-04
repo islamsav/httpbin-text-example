@@ -15,5 +15,4 @@
 2. Если 2 пункт не подходит то в idea на нижней панели кликаем на "Terminal" и вводим команду "mvn test -DthreadCount={количество потоков}"
 * В моем случае команда для запуска выглядит так "C:\Users\User\IdeaProjects\httpbin-text-example>mvn clean test -DthreadCount=10"
 3 Ждем окончания тестов, в консоли появится строка "Results"
-* Например так: 
 [INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0
