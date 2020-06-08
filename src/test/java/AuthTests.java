@@ -2,8 +2,6 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pojo.AuthModel;
@@ -17,7 +15,7 @@ public class AuthTests {
     @Test(testName = "POSITIVE auth test on /basic-auth/{user}/{password} with random data", suiteName = "auth")
     public void positivePerformBasicAuthRequest() {
         String generateUserName = DataGen.getRandomString(DataGen.EN, DataGen.rnd(6, 15));
-        String generatePassword = DataGen.getRandomString(DataGen.RAND_CHARS, DataGen.rnd(10, 30));;
+        String generatePassword = DataGen.getRandomString(DataGen.RAND_CHARS, DataGen.rnd(10, 30));
         AuthModel authModel = RestAssured.given().baseUri(EndPoints.BASE)
                 .pathParam("user", generateUserName)
                 .pathParam("passwd", generatePassword)
@@ -38,7 +36,7 @@ public class AuthTests {
     @Test(testName = "NEGATIVE auth test on /basic-auth/{user}/{password} with random data", suiteName = "auth")
     public void negativePerformBasicAuthRequest() {
         String generateUserName = DataGen.getRandomString(DataGen.EN, DataGen.rnd(6, 15));
-        String generatePassword = DataGen.getRandomString(DataGen.RAND_CHARS, DataGen.rnd(10, 30));;
+        String generatePassword = DataGen.getRandomString(DataGen.RAND_CHARS, DataGen.rnd(10, 30));
         RestAssured.given().baseUri(EndPoints.BASE)
                 .pathParam("user", generateUserName)
                 .pathParam("passwd", generatePassword)
@@ -83,7 +81,7 @@ public class AuthTests {
     @Test(testName = "POSITIVE /digest-auth/{qop}/{user}/{passwd}", suiteName = "auth")
     public void positiveDigestAuthRequest() {
         String generateUserName = DataGen.getRandomString(DataGen.EN, DataGen.rnd(6, 15));
-        String generatePassword = DataGen.getRandomString(DataGen.RAND_CHARS, DataGen.rnd(10, 30));;
+        String generatePassword = DataGen.getRandomString(DataGen.RAND_CHARS, DataGen.rnd(10, 30));
         AuthModel authModel = RestAssured.given().baseUri(EndPoints.BASE)
                 .pathParam("user", generateUserName)
                 .pathParam("passwd", generatePassword)
@@ -103,7 +101,7 @@ public class AuthTests {
     @Test(testName = "NEGATIVE /digest-auth/{qop}/{user}/{passwd}", suiteName = "auth")
     public void negativeDigestAuthRequest() {
         String generateUserName = DataGen.getRandomString(DataGen.EN, DataGen.rnd(6, 15));
-        String generatePassword = DataGen.getRandomString(DataGen.RAND_CHARS, DataGen.rnd(10, 30));;
+        String generatePassword = DataGen.getRandomString(DataGen.RAND_CHARS, DataGen.rnd(10, 30));
         int code = RestAssured.given().baseUri(EndPoints.BASE)
                 .pathParam("user", generateUserName)
                 .pathParam("passwd", generateUserName)
@@ -120,7 +118,7 @@ public class AuthTests {
     @Test(testName = "POSITIVE /digest-auth/{qop}/{user}/{passwd}/{algorithm}", suiteName = "auth")
     public void positiveDigestAuthWithAlgorithmRequest() {
         String generateUserName = DataGen.getRandomString(DataGen.EN, DataGen.rnd(6, 15));
-        String generatePassword = DataGen.getRandomString(DataGen.RAND_CHARS, DataGen.rnd(10, 30));;
+        String generatePassword = DataGen.getRandomString(DataGen.RAND_CHARS, DataGen.rnd(10, 30));
         AuthModel authModel = RestAssured.given().baseUri(EndPoints.BASE)
                 .pathParam("user", generateUserName)
                 .pathParam("passwd", generatePassword)
@@ -141,7 +139,7 @@ public class AuthTests {
     @Test(testName = "NEGATIVE /digest-auth/{qop}/{user}/{passwd}/{algorithm}", suiteName = "auth")
     public void negativeDigestAuthWithAlgorithmRequest() {
         String generateUserName = DataGen.getRandomString(DataGen.EN, DataGen.rnd(6, 15));
-        String generatePassword = DataGen.getRandomString(DataGen.RAND_CHARS, DataGen.rnd(10, 30));;
+        String generatePassword = DataGen.getRandomString(DataGen.RAND_CHARS, DataGen.rnd(10, 30));
         int code = RestAssured.given().baseUri(EndPoints.BASE)
                 .pathParam("qop", "auth")
                 .pathParam("user", generateUserName)
@@ -159,7 +157,7 @@ public class AuthTests {
     @Test(testName = "POSITIVE digest-auth/{qop}/{user}/{passwd}/{algorithm}/{stale_after}", suiteName = "auth")
     public void positiveDigestAuthWithStaleAfter() {
         String generateUserName = DataGen.getRandomString(DataGen.EN, DataGen.rnd(6, 15));
-        String generatePassword = DataGen.getRandomString(DataGen.RAND_CHARS, DataGen.rnd(10, 30));;
+        String generatePassword = DataGen.getRandomString(DataGen.RAND_CHARS, DataGen.rnd(10, 30));
         Response response = RestAssured.given().baseUri(EndPoints.BASE)
                 .pathParam("qop", "auth")
                 .pathParam("user", generateUserName)
@@ -178,7 +176,7 @@ public class AuthTests {
     @Test(testName = "NEGATIVE digest-auth/{qop}/{user}/{passwd}/{algorithm}/{stale_after}", suiteName = "auth")
     public void negativeDigestAuthWithStaleAfter() {
         String generateUserName = DataGen.getRandomString(DataGen.EN, DataGen.rnd(6, 15));
-        String generatePassword = DataGen.getRandomString(DataGen.RAND_CHARS, DataGen.rnd(10, 30));;
+        String generatePassword = DataGen.getRandomString(DataGen.RAND_CHARS, DataGen.rnd(10, 30));
         RestAssured.given().baseUri(EndPoints.BASE)
                 .pathParam("qop", "auth")
                 .pathParam("user", generateUserName)
@@ -197,7 +195,7 @@ public class AuthTests {
     @Test(testName = "POSITIVE hidden-basic-auth/{user}/{passwd}", suiteName = "auth")
     public void positiveHiddenBasicAuth() {
         String generateUserName = DataGen.getRandomString(DataGen.EN, DataGen.rnd(6, 15));
-        String generatePassword = DataGen.getRandomString(DataGen.RAND_CHARS, DataGen.rnd(10, 30));;
+        String generatePassword = DataGen.getRandomString(DataGen.RAND_CHARS, DataGen.rnd(10, 30));
         String auth = Base64.getEncoder().encodeToString((generateUserName + ":" + generatePassword).getBytes());
         RestAssured.given().baseUri(EndPoints.BASE)
                 .pathParam("user", generateUserName)
