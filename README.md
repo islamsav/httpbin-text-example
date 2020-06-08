@@ -12,3 +12,4 @@
 * В моем случае команда для запуска выглядит так "C:\Users\User\IdeaProjects\httpbin-text-example>mvn clean test -DthreadCount=10"
 * Ждем окончания тестов, в консоли появится строка "Results"
 * [INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0
+* Если локально установлен allure то можно посмотреть аллюр-отчет, набрав команду в командной строке "allure serve {путь до папки targer/allure-results}", ждем 3-5 сек, сгенерируется html-страница с результатами тестов
