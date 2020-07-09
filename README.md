@@ -1,4 +1,3 @@
-* Прохождение тестов - https://www.youtube.com/watch?v=sdJ894pgn2U
 * Инструкция для IntellijIdea (далее idea)
 1. Переходим в репозиторий с тестами, кликаем на "Clone or download", копируем ссылку
 2. Открываем idea
